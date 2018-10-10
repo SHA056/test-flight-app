@@ -1,0 +1,138 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Airline Insurance </title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: beige;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Airline Insurance Policy</div>
+      <i id="right_header">First Draft for PS QuickIT Airline Insurance Policy page</i>
+    </header>
+
+    <div id="body">
+      <div class="form-group">
+        <label>Show All Users</label>
+        <p><input id="viewLedger" type="submit" value="Show" class="btn btn-primary" ng-click="viewLedger()"></p>
+      </div>
+ 
+      <table id="all_record" class="table" align="center">
+
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>User ID </th>
+          <th>Email</th>
+          <th>Age</th>
+        </tr>
+
+        <tr ng-repeat="record in all_record">
+          <td>{{record.Key}}</td>
+          <td>{{record.userdet.name}}</td>
+          <td>{{record.userdet.userid}}</td>
+          <td>{{record.userdet.email}}</td>
+          <td>{{record.userdet.age}}</td>
+        </tr>
+        
+      </table>
+
+      <div class="form-group">
+        <label>Create New User</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_record}}</h5>
+        <br>
+        Account Key: <input class="form-control" type="text" ng-model="record.id">
+        Age: <input class="form-control" type="text" ng-model="record.age">
+        User ID: <input id="createName" class="form-control" type="text" ng-model="record.userid">
+        Name: <input class="form-control" type="text" ng-model="record.name">
+        Email: <input class="form-control" type="text" ng-model="record.email">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="newUser()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Submit Policy Details</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_policy">Success! Tx ID: {{select_policy}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_policy">Error: Please enter a valid key</h5>
+        Your Unique key: <input class="form-control" name="assetSelect" ng-model="policy.id">
+        Policy ID: <input class="form-control" name="assetSelect" ng-model="policy.polid">
+        Policy Name: <input class="form-control" name="assetSelect" ng-model="policy.name">
+        Amount: <input class="form-control" name="assetSelect" ng-model="policy.polval">
+        Validity: <input class="form-control" name="assetSelect" ng-model="polval.polvalid">
+
+        <input id="transferSubmit" type="submit" value="Submit" class="btn btn-primary" ng-click="selectPolicy()">
+      </div>
+
+      <div class="form-group">
+        <label>Submit Flight Details</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_flight">Success! Tx ID: {{flight_detail}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_flight">Error: Please enter a valid key</h5>
+        Your Unique key: <input class="form-control" name="assetSelect" ng-model="flight.id">
+        Flight Number: <input class="form-control" name="assetSelect" ng-model="flight.number">
+        Airline Name: <input class="form-control" name="assetSelect" ng-model="flight.airlinename">
+        Arrival or Departure: <input class="form-control" name="assetSelect" ng-model="flight.arrdep">
+        iata code: <input class="form-control" name="assetSelect" ng-model="flight.iatacode">
+        Time of Departure: <input class="form-control" name="assetSelect" ng-model="flight.time">
+        <input id="transferSubmit" type="submit" value="Submit" class="btn btn-primary" ng-click="flightDet()">
+      </div>
+
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>

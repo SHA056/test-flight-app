@@ -1,0 +1,52 @@
+
+
+version: '3.4'
+
+volumes:
+  orderer.example.com:
+  
+networks:
+  bymn:
+    external:
+      name: $SWARM_NETWORK
+
+services:
+  orderer:
+    container_name: orderer
+    image: hyperledger/fabric-orderer:$IMAGE_TAG
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=DEBUG
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/orderer/tls/ca.crt]
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ./config/:/etc/hyperledger/configtx
+    - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/:/etc/hyperledger/msp/orderer
+    - ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/:/etc/hyperledger/msp/peerOrg1
+    - orderer.example.com:/etc/hyperledger/production/orderer
+    deploy:
+            mode: replicated
+            replicas: 1
+            restart_policy:
+              condition: on-failure
+            placement:
+                constraints:
+                    - node.hostname == $ORDERER_HOSTNAME 
+
+    ports:
+      - published: 7050
+        target: 7050
+        mode: host
+    networks:
+      bymn:
+        aliases:
+          - orderer.example.com

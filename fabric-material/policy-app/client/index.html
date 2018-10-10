@@ -1,0 +1,162 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Airline Insurance </title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: beige;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Airline Insurance Policy</div>
+      <i id="right_header">First Draft for PS QuickIT Airline Insurance Policy page</i>
+    </header>
+
+    <div id="body">
+      <div class="form-group">
+        <label>Show All Users</label>
+        <p><input id="viewLedger" type="submit" value="Show" class="btn btn-primary" ng-click="viewLedger()"></p>
+      </div>
+ 
+      <table id="all_record" class="table" align="center">
+
+        <tr>
+          <th>ID</th>
+          <th>User ID </th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Age</th>
+          <th>Claim Status</th>
+          <th>Policy Name</th>
+          <th>Cost per Policy</th>   
+          <th>Airline Name</th>
+          <th>Arrival/Departure</th>
+          <th>iata Code</th>
+          <th>Time of Departure</th>
+        </tr>
+
+        <tr ng-repeat="record in all_record">
+          <td>{{record.Key}}</td>
+          <td>{{record.userdet.userid}}</td>
+          <td>{{record.userdet.name}}</td>
+          <td>{{record.userdet.email}}</td>
+          <td>{{record.userdet.age}}</td>
+          <td>{{record.claimstatus}}</td>
+          <td>{{record.policydet.polname}}</td>
+          <td>{{record.policydet.polvalue}}</td>
+          <td>{{record.flightdet.airlinename}}</td>
+          <td>{{record.flightdet.arrdep}}</td>
+          <td>{{record.flightdet.iatacode}}</td>
+          <td>{{record.flightdet.time}}</td>
+        </tr>
+        
+      </table>
+
+      <div class="form-group">
+        <label>Create New User</label>
+        Account Key: <input class="form-control" type="text" ng-model="record.id">
+        User ID: <input id="createName" class="form-control" type="text" ng-model="record.userid">
+        Name: <input class="form-control" type="text" ng-model="record.name">
+        Email: <input class="form-control" type="text" ng-model="record.email">
+        Age: <input class="form-control" type="text" ng-model="record.age">
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_record}}</h5>
+        <br>
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="newUser()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Select a Policy</label><br>
+        Enter the KEY: <input class="form-control" name="assetSelect" ng-model="policy.id">
+        Policy ID: <input class="form-control" name="assetSelect" ng-model="policy.polid">
+        Policy Name: <input class="form-control" name="assetSelect" ng-model="policy.polname">
+        Total Value: <input class="form-control" name="assetSelect" ng-model="policy.polval">
+        Valid Through: <input class="form-control" name="assetSelect" ng-model="policy.polvalid">
+        <h5 style="color:green;margin-bottom:2%" id="success_policy">Success! Tx ID: {{select_policy}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_policy">Error: Please enter a valid KEY</h5>
+
+        <input id="transferSubmit" type="submit" value="Add" class="btn btn-primary" ng-click="selectPolicy()">
+      </div>
+
+      <div class="form-group">
+        <label>Enter Flight Details</label><br>
+        Enter the KEY: <input class="form-control" name="assetSelect" ng-model="flight.id">
+        Flight Number: <input class="form-control" name="assetSelect" ng-model="flight.flightnum">
+        Airline: <input class="form-control" name="assetSelect" ng-model="flight.airline">
+        Arrival or Departure: <input class="form-control" name="assetSelect" ng-model="flight.arrdep">
+        IATA code: <input class="form-control" name="assetSelect" ng-model="flight.iatacode">
+        Time of departure: <input class="form-control" name="assetSelect" ng-model="flight.time">
+        <h5 style="color:green;margin-bottom:2%" id="success_flight">Success! Tx ID: {{flight_detail}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_flight">Error: Please enter a valid KEY</h5>
+
+        <input id="transferSubmit" type="submit" value="Add" class="btn btn-primary" ng-click="flightDet()">
+      </div>
+
+      <div class="form-group">
+        <label>Check for Active Claims</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_roll">Success! Claim Statuses Successfully checked</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_roll">Oops... Something went wrong!</h5>
+
+        <p><input id="rollClaim" type="submit" value="Check" class="btn btn-primary" ng-click="rollClaim()"></p>
+      </div>
+
+
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>
